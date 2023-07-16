@@ -179,7 +179,7 @@ public class Cart extends ArrayList<Product1> {
                     removeFromCart();
                     break;
                 case 5:
-                    shop.shopMenu(shop, user);
+                    return;
 
                 //View receipt
             }

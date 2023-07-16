@@ -308,6 +308,7 @@ public class Shop extends ArrayList<Product1> {
         ArrayList<String> mList = new ArrayList();
         Userlist userlist = new Userlist();
         userlist.readFromfile();
+        mList.clear();
 
         //???
         if (shop.isEmpty()) {
@@ -322,7 +323,6 @@ public class Shop extends ArrayList<Product1> {
         mList.add("List by Sold Quantity");
         mList.add("Review Item");
         mList.add("Go to Cart");
-
         mList.add("Return");
         if (isAdmin) {
             mList.add("(Admin) Update a Product");
@@ -361,7 +361,7 @@ public class Shop extends ArrayList<Product1> {
                     break;
                 case 6:
                     cart.cartMenu(shop, user);
-                    break;
+                  break;
                 case 7:
                     cart.clear();
                     return;

@@ -1,0 +1,3 @@
+username, password, fullName, email
+nguyen, nguyen123, tran pham thao nguyen, thaonguyen@gmail.com, true
+phong, phong123, vo nhu phong, phong@fpt.edu, false
