@@ -14,10 +14,10 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import utils.MyUtils;
+
 /**
  *
  * @author Suko
@@ -111,7 +111,7 @@ public class Shop extends ArrayList<Product1> {
         do {
             System.out.println(this.size());
 
-            code = MyUtils.inputString("Enter Code:", "P[\\d]{6}", "Invalid code, must be in the <P000000> Format)");
+            code = MyUtils.inputString("Enter Code<P000000>:", "P[\\d]{6}", "Invalid code, must be in the <P000000> Format)");
             for (int i = 0; i < this.size(); i++) {
                 if (code.equals(this.get(i).getID())) {
                     check = false;
@@ -247,7 +247,7 @@ public class Shop extends ArrayList<Product1> {
 
     public void putInCart(Cart cart) {
         ArrayList<String> mmList = new ArrayList();
-        
+
         if (this.isEmpty()) {
             System.out.println("No Product to put in Cart");
             return;
@@ -273,7 +273,6 @@ public class Shop extends ArrayList<Product1> {
         int quantity = MyUtils.inputInt("Enter Quantity to Buy: ", "Invalid Quantity", 1, this.get(choice2 - 1).getQuantity());
 
         cart.addToCart(this.get(choice2 - 1), quantity);
-        writeToFileCart();
     }
     
     public void reviewItem(){
@@ -368,12 +367,14 @@ public class Shop extends ArrayList<Product1> {
                     cart.clear();
                     return;
                 case 8:
+                    viewProd(shop);
                     updateProd();
                     break;
                 case 9:
                     createProd();
                     break;
                 case 10:
+                    viewProd(shop);
                     deleteProd();
                     break;
 
@@ -383,52 +384,4 @@ public class Shop extends ArrayList<Product1> {
 
     }
 
-        private static final String FILENAMECART = "src/data/cart";
-        public void readFromfileCart() {
-        ArrayList<String> mmList = new ArrayList();
-        BufferedReader reader;
-        String line;
-        File file = new File(FILENAMECART);
-        if (!file.exists()) {
-            System.out.println("File not exist!!!");
-            System.exit(0);
-        }
-        try {
-            reader = new BufferedReader(new FileReader(file));
-            line = reader.readLine();
-            while ((line = reader.readLine()) != null) {
-                String[] row = line.split(", ");
-                if (row.length >= 7) {
-                    String ID = row[0];
-                    String name = row[1];
-                    int ratingCount = Integer.parseInt(row[2]);
-                    float starRating = Float.parseFloat(row[3]);
-                    int quantity = Integer.parseInt(row[4]);
-                    int soldQuantity = Integer.parseInt(row[5]);
-                    int price = Integer.parseInt(row[6]);
-
-                    Product1 cart = new Product1(ID, name, ratingCount, starRating, quantity, soldQuantity, price);
-                    this.add(cart);
-                } else {
-                    System.out.println("Invalid data format: " + line);
-                }
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void writeToFileCart() {
-        try {
-            PrintWriter out = new PrintWriter(FILENAMECART);
-            out.println("ID, Name, RatingCount, StarRating, Quantity, SoldQuantity, Price");
-            this.forEach((Product1 cart) -> {
-                out.println(cart.getSoldQuantity() + ", " + cart.getPrice() + cart.getID() + ", " + cart.getName() + ", " + cart.getRatingCount() + ", " + cart.getStarRating() + ", " + cart.getQuantity() + ", ");
-            });
-            out.close();
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Shop.class.getName()).log(Level.SEVERE, null, ex);
-     
-        }
-   }
-    }
+}

@@ -119,11 +119,13 @@ public class Cart extends ArrayList<Product1> {
         });
 
         if (isAdmin) {
+
             for (int i = 0; i < this.size(); i++) {
                 System.out.println((i + 1 + ". ") + this.get(i).toString());
             }
             System.out.println("\n");
         } else {
+
             for (int i = 0; i < this.size(); i++) {
                 System.out.println((i + 1 + ". ") + this.get(i).toStringMisc());
             }
@@ -211,6 +213,7 @@ public class Cart extends ArrayList<Product1> {
         mList.add("View all product in cart");
         mList.add("Change Quantity");
         mList.add("Remove from Cart");
+        mList.add("Show Receipt");
         mList.add("Exit");
         if (isAdmin) {
             mList.add("(Admin) View all receipt");
@@ -237,11 +240,13 @@ public class Cart extends ArrayList<Product1> {
                 case 4:
                     removeFromCart();
                     break;
-//                case 5:
-//                    //Show receipt
                 case 5:
-                    return;
+                    showReceipt();
+                    break;
+                    //Show receipt
                 case 6:
+                    return;
+                case 7:
                     viewRec();
                     break;
                 //View receipt
