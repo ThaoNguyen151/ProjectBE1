@@ -15,23 +15,38 @@ import utils.MyUtils;
  * @author Suko
  */
 public class Cart extends ArrayList<Product1> {
+    
+    private String username;
     private boolean isAdmin;
-    private static final String receipt = "src/data/receipt";
 
     public void confirmPurchase(Shop shop) {
         if (this.size() > 0) {
+            int totalPrice = 0;
+            
+            ReceiptList recList = new ReceiptList();
+            recList.readFromfile();
+            Receipt rec = new Receipt();
+            rec.setAllProd("");
+            rec.setTotalPrice(0);
+            
             for (Product1 prod : this) {
                 for (int i = 0; i < shop.size(); i++) {
                     if (shop.get(i).getID().equals(prod.getID())) {
                         shop.get(i).setQuantity(shop.get(i).getQuantity() - prod.getQuantity());
                         shop.get(i).setSoldQuantity(shop.get(i).getSoldQuantity() + prod.getQuantity());
-
-                        System.out.println("Bought " + prod.getQuantity() + " " + prod.getName());
+                        
+                        System.out.println("Bought " + prod.getQuantity() + " " + prod.getName() + "for ==" + prod.getTotal());
+                        rec.appendProd(prod.getName() + "--" + prod.getQuantity() + "--" + prod.getTotal() + "||");
+                        totalPrice += prod.getTotal();
                         shop.writeToFile();
                     }
                 }
             }
-
+            rec.setUser(username);
+            rec.setTotalPrice(totalPrice);
+            recList.add(rec);
+            recList.writeToFile();
+            System.out.println("Total cost of all products: " + totalPrice);
             this.clear();
         } else {
             System.out.println("Nothing in Cart to Confirm");
@@ -104,13 +119,11 @@ public class Cart extends ArrayList<Product1> {
         });
 
         if (isAdmin) {
-
             for (int i = 0; i < this.size(); i++) {
                 System.out.println((i + 1 + ". ") + this.get(i).toString());
             }
             System.out.println("\n");
         } else {
-
             for (int i = 0; i < this.size(); i++) {
                 System.out.println((i + 1 + ". ") + this.get(i).toStringMisc());
             }
@@ -119,12 +132,15 @@ public class Cart extends ArrayList<Product1> {
     }
 
     public void changeQuantity(Shop shop) {
+        int quan = 0;
+        
         if (this.isEmpty()) {
             System.out.println("No item to change Quantity");
             return;
         }
 
-        System.out.println("Choose Item to Remove: ");
+        //shop.viewProd(shop);
+        System.out.println("Choose Item to Change Quantity: ");
 
         ArrayList<String> mmList = new ArrayList();
 
@@ -139,20 +155,63 @@ public class Cart extends ArrayList<Product1> {
         System.out.println("\n");
 
         int choice = MyUtils.inputInt("Enter your choice to change quantity", "Invalid choice", 1, mmList.size());
-        int quantity = MyUtils.inputInt("Enter Quantity: ", "Quantity can't be empty", 1, shop.get(choice - 1).getQuantity());
+        if (this.get(choice - 1).getQuantity() <= 0){
+            
+            System.out.println("No Item in Stock");
+            return;
+        }
+        
+        //System.out.println(this.get(choice - 1).toString());
+        
+        for (Product1 prod : shop){
+            if (prod.getID().equals(this.get(choice - 1).getID())){
+                quan = prod.getQuantity();
+                //System.out.println(quan);
+            }
+        }
+        
+        if (quan <= 0){
+            System.out.println("Err");
+            return;
+        }
+        
+        int quantity = MyUtils.inputInt("Enter Quantity: ", "Quantity can't be empty", 1, quan);
         this.get(choice - 1).setQuantity(quantity);
+    }
+    
+    public void viewRec(){
+        ReceiptList recList = new ReceiptList();
+        recList.readFromfile();
+        
+        System.out.println();
+        for (Receipt rec : recList){
+            System.out.println(rec.toString());
+        }
+        System.out.println();
+    }
+    
+    public void showReceipt(){
+        ReceiptList recList = new ReceiptList();
+        recList.readFromfile();
+        
+        for (Receipt rec : recList){
+            if (rec.getUser().equals(username)){
+                System.out.println(rec.toString());
+            }
+        }
     }
     
     public void cartMenu(Shop shop, User user) {
         ArrayList<String> mList = new ArrayList();
         isAdmin = user.isAdminPerm();
+        username = user.getUsername();
         
         System.out.println("============ Cart ============");
         mList.add("Confirm all Purchase");
         mList.add("View all product in cart");
         mList.add("Change Quantity");
         mList.add("Remove from Cart");
-        mList.add("Exit (Will lose data inside Cart)");
+        mList.add("Exit");
         if (isAdmin) {
             mList.add("(Admin) View all receipt");
         }
@@ -178,9 +237,13 @@ public class Cart extends ArrayList<Product1> {
                 case 4:
                     removeFromCart();
                     break;
+//                case 5:
+//                    //Show receipt
                 case 5:
                     return;
-
+                case 6:
+                    viewRec();
+                    break;
                 //View receipt
             }
 

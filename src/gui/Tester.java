@@ -1,6 +1,7 @@
 package gui;
 
 import core.Cart;
+import core.ReceiptList;
 import core.Shop;
 import core.ShopList;
 import core.User;
@@ -13,12 +14,16 @@ import java.util.Scanner;
 public class Tester {
     public static void main(String[] args) {
         Userlist userList = new Userlist();
-        Shop shop = new Shop();
         ShopList shopList = new ShopList();
+        Shop shop = new Shop();
         Cart cart = new Cart();
+        ReceiptList rec = new ReceiptList();
+        
         userList.readFromfile();
         shop.readFromfile();
         shopList.readFromfile();
+        
+        
         ArrayList<String> Menu = new ArrayList<>();
         Menu.add("Login");
         Menu.add("Register");

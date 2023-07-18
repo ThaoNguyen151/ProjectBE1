@@ -57,8 +57,8 @@ public class Userlist extends ArrayList<User> {
     }
 
     public User login() {
-        String username = MyUtils.inputString("Enter your username", "Username can't be empty");
-        String password = MyUtils.inputString("Enter your password", "Password can't be empty");
+        String username = MyUtils.inputString("Enter your username:", "Username can't be empty");
+        String password = MyUtils.inputString("Enter your password:", "Password can't be empty");
         for (User user : this) {
             if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
                 return user;
@@ -72,7 +72,7 @@ public class Userlist extends ArrayList<User> {
         String password;
 
         do {
-            username = MyUtils.inputString("Enter your username", "Username can't be empty");
+            username = MyUtils.inputString("Enter your username:", "Username can't be empty");
             if (username.length() > 12 || username.length() < 4) {
                 System.out.println("Username must be between 4 or 12 characters");
             } else {
@@ -91,7 +91,7 @@ public class Userlist extends ArrayList<User> {
         } while (true);
 
         do {
-            password = MyUtils.inputString("Enter your password", "Password can't be empty");
+            password = MyUtils.inputString("Enter your password:", "Password can't be empty");
             if (password.length() > 12 || password.length() < 6) {
                 System.out.println("Password must be between 6 to 12 characters");
             } else {
@@ -100,14 +100,14 @@ public class Userlist extends ArrayList<User> {
         } while (true);
 
         // Step2
-        String fullname = MyUtils.inputString("Enter your full name", "Full name can't be empty");
+        String fullname = MyUtils.inputString("Enter your full name:", "Full name can't be empty");
         boolean validGmail = false;
         String gmail;
         while (!validGmail) {
-            gmail = MyUtils.inputString("Enter your gmail (Ex: thaonguyen@gmail.com)", "Email can't be empty");
+            gmail = MyUtils.inputString("Enter your gmail (Ex: thaonguyen@gmail.com):", "Email can't be empty");
             String regex = "^(.+)@(.+)[.+](.+)$";
             if (gmail.matches(regex)) {
-                int choice = MyUtils.inputInt("Is this account an admin? (1: Yes, 2: No)", "Invalid Input", 0, 1);
+                int choice = MyUtils.inputInt("Is this account an admin? (1: Yes, 0: No):", "Invalid Input", 0, 1);
                 boolean bool = (choice == 1);
                 User newUser = new User(username, password, fullname, gmail, bool);
                 this.add(newUser);

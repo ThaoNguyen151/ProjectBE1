@@ -1,0 +1,4 @@
+ID, Name, RatingCount, StarRating, Quantity, SoldQuantity, Price
+5, 1000P000000, Water, 4, 3.5, 0, 
+99, 2000P000001, Toy, 2, 4.5, 1, 
+34, 5000P000002, Pen, 1, 2.0, 66, 

@@ -1,3 +1,5 @@
 username, password, fullName, email
 nguyen, nguyen123, tran pham thao nguyen, thaonguyen@gmail.com, true
 phong, phong123, vo nhu phong, phong@fpt.edu, false
+ThanhTri, thanhtri, Nguyen Thanh Tri, nttri.10a1cl2@gmail.com, false
+hoang, hoang1243, hoang, ho�n@gmail.com, true
